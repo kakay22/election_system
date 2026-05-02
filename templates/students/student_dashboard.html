@@ -1,0 +1,98 @@
+{% extends "students/student_base.html" %}
+
+{% block content %}
+
+<div class="space-y-6">
+
+    <!-- HEADER -->
+    <div>
+        <h1 class="text-3xl font-bold text-gray-800">
+            Welcome, {{ student.first_name }} 👋
+        </h1>
+        <p class="text-gray-500 text-sm">
+            Student Dashboard
+        </p>
+    </div>
+
+    <!-- STATUS CARD -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+        <!-- Election Status -->
+        <div class="bg-white p-5 rounded-xl shadow border">
+            <h2 class="text-sm text-gray-500">Election Status</h2>
+            <p class="text-lg font-semibold mt-1">
+                {% if election %}
+                    {% if election.is_open %}
+                        <span class="text-green-600">Active</span>
+                    {% else %}
+                        <span class="text-yellow-600">Scheduled</span>
+                    {% endif %}
+                {% else %}
+                    <span class="text-red-500">No Election</span>
+                {% endif %}
+            </p>
+        </div>
+
+        <!-- Voting Status -->
+        <div class="bg-white p-5 rounded-xl shadow border">
+            <h2 class="text-sm text-gray-500">Your Voting Status</h2>
+            <p class="text-lg font-semibold mt-1">
+                {% if has_voted %}
+                    <span class="text-green-600">Completed</span>
+                {% else %}
+                    <span class="text-red-500">Not Voted</span>
+                {% endif %}
+            </p>
+        </div>
+
+        <!-- Student Info -->
+        <div class="bg-white p-5 rounded-xl shadow border">
+            <h2 class="text-sm text-gray-500">Student ID</h2>
+            <p class="text-lg font-semibold mt-1">
+                {{ student.student_id }}
+            </p>
+        </div>
+
+    </div>
+
+    <!-- ACTION SECTION -->
+    <div class="bg-white p-6 rounded-xl shadow border">
+
+        <h2 class="text-lg font-semibold mb-4 text-gray-700">
+            Quick Actions
+        </h2>
+
+        <div class="flex flex-col md:flex-row gap-4">
+
+            {% if election and election.is_open and not has_voted %}
+                <a href="/vote/"
+                   class="bg-blue-600 hover:bg-blue-700 text-white text-center py-3 px-5 rounded-lg font-semibold">
+                    🗳 Start Voting
+                </a>
+            {% elif has_voted %}
+                <div class="bg-green-100 text-green-700 text-center py-3 px-5 rounded-lg font-semibold w-full">
+                    ✔ You have already voted
+                </div>
+            {% else %}
+                <div class="bg-gray-100 text-gray-600 text-center py-3 px-5 rounded-lg font-semibold w-full">
+                    Voting is not available yet
+                </div>
+            {% endif %}
+
+            <a href="{% url 'student_candidate_list' %}"
+               class="bg-gray-800 hover:bg-black text-white text-center py-3 px-5 rounded-lg font-semibold">
+                👥 View Candidates
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- INFO BOX -->
+    <div class="bg-blue-50 border border-blue-100 p-4 rounded-xl text-sm text-blue-700">
+        ⚠️ Reminder: Voting is secure and monitored. You can only vote once per election.
+    </div>
+
+</div>
+
+{% endblock %}

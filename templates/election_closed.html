@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Election Countdown - HIC eVote</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+
+<div class="bg-white border shadow-lg rounded-2xl p-10 text-center max-w-md w-full">
+
+    <!-- ICON -->
+    <div class="text-6xl mb-4">⏳</div>
+
+    <!-- TITLE -->
+    <h1 class="text-2xl font-bold text-gray-800 mb-2">
+        Election Starts Soon
+    </h1>
+
+    <p class="text-gray-600 text-sm mb-6">
+        Voting will open automatically when the countdown ends.
+    </p>
+
+    <!-- COUNTDOWN BOX -->
+    <div class="bg-gray-50 border rounded-xl p-4 mb-6">
+
+        <p class="text-sm text-gray-500 mb-2">Time remaining</p>
+
+        <div id="countdown" class="text-2xl font-bold text-blue-600">
+            Loading...
+        </div>
+
+    </div>
+
+    <!-- BACK -->
+    <a href="/students/dashboard/"
+       class="block bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-semibold">
+        Back to Dashboard
+    </a>
+
+</div>
+
+<!-- ================= COUNTDOWN SCRIPT ================= -->
+<script>
+    // ⬇️ Django injects start_time here
+    const startTime = new Date("{{ election.start_time|date:'Y-m-d H:i:s' }}").getTime();
+
+    const countdownEl = document.getElementById("countdown");
+
+    function updateCountdown() {
+        const now = new Date().getTime();
+        const diff = startTime - now;
+
+        if (diff <= 0) {
+            countdownEl.innerHTML = "Election is now OPEN";
+            countdownEl.classList.add("text-green-600");
+            return;
+        }
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+        const seconds = Math.floor((diff / 1000) % 60);
+
+        countdownEl.innerHTML =
+            `${days}d ${hours}h ${minutes}m ${seconds}s`;
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+</script>
+
+</body>
+</html>

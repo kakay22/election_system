@@ -1,0 +1,87 @@
+{% extends "students/student_base.html" %}
+
+{% block content %}
+
+<div class="space-y-6">
+
+    <!-- HEADER -->
+    <div>
+        <h1 class="text-3xl font-bold text-gray-800">
+            📊 Election Results
+        </h1>
+        <p class="text-gray-500 text-sm">
+            Live vote counts per position
+        </p>
+    </div>
+
+    <!-- ELECTION TITLE -->
+    <div class="bg-white border rounded-xl p-4 shadow-sm">
+        <p class="text-sm text-gray-600">
+            🏛 Election:
+            <span class="font-semibold text-gray-800">
+                {{ election.title }}
+            </span>
+        </p>
+    </div>
+
+    <!-- LOOP POSITIONS -->
+    {% for position in positions %}
+
+    <div class="bg-white border rounded-xl shadow-sm p-5">
+
+        <!-- POSITION TITLE -->
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">
+            {{ position.name }}
+        </h2>
+
+        <!-- CANDIDATES -->
+        <div class="space-y-3">
+
+            {% for candidate in position.candidates_list %}
+
+            <!-- RESULT ITEM -->
+            <div class="p-3 border rounded-lg bg-gray-50">
+
+                <!-- NAME + COUNT -->
+                <div class="flex justify-between items-center mb-2">
+
+                    <div>
+                        <p class="font-semibold text-gray-800">
+                            {{ candidate.full_name }}
+                        </p>
+                        <p class="text-xs text-gray-500">
+                            {{ candidate.partylist }}
+                        </p>
+                    </div>
+
+                    <span class="text-sm font-bold text-gray-700">
+                        {{ candidate.vote_count }} votes
+                    </span>
+
+                </div>
+
+                <!-- PROGRESS BAR -->
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div class="bg-blue-600 h-2 rounded-full"
+                         style="width: {{ candidate.percentage }}%">
+                    </div>
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+    <!-- FOOTER -->
+    <div class="text-xs text-gray-500 text-center mt-6">
+        ⚠️ Results are updated automatically based on submitted votes.
+    </div>
+
+</div>
+
+{% endblock %}

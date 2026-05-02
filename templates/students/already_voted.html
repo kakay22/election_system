@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vote Submitted - HIC eVote</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        body {
+            background: radial-gradient(circle at top, #f0fdf4, #f8fafc);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex items-center justify-center px-4">
+
+    <div class="bg-white shadow-xl border rounded-2xl p-10 text-center max-w-md w-full">
+
+        <!-- Icon -->
+        <div class="text-5xl mb-4">✔️</div>
+
+        <!-- Title -->
+        <h1 class="text-2xl font-bold text-gray-800 mb-2">
+            Vote Successfully Submitted
+        </h1>
+
+        <!-- Message -->
+        <p class="text-gray-600 text-sm mb-6">
+            You have already cast your vote for this election.  
+            Each student is allowed to vote only once to ensure election integrity.
+        </p>
+
+        <!-- Status Box -->
+        <div class="bg-green-50 border border-green-100 text-green-700 text-sm p-4 rounded-lg mb-6">
+            🛡️ Your vote has been securely recorded and cannot be changed.
+        </div>
+
+        <!-- Actions -->
+        <div class="space-y-3">
+
+            <a href="{% url 'student_result_page' %}"
+               class="block bg-gray-900 hover:bg-black text-white py-2 rounded-lg font-semibold">
+                View Results
+            </a>
+
+            <a href="{% url 'student_dashboard' %}"
+               class="block bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-semibold">
+                Go to Dashboard
+            </a>
+
+        </div>
+
+        <!-- Footer -->
+        <p class="text-xs text-gray-400 mt-6">
+            HIC eVote System • Secure Digital Election Platform
+        </p>
+
+    </div>
+
+</body>
+</html>

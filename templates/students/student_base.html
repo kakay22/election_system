@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Panel - HIC eVote</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- MATERIAL ICONS -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- TAILWIND -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        html, body {
+            background: #f8fafc;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col">
+
+<!-- ================= NAVBAR ================= -->
+<header class="bg-white shadow-sm border-b">
+    <div class="flex items-center justify-between px-4 py-3">
+
+        <!-- LOGO -->
+        <div class="flex items-center gap-2">
+            <div class="w-9 h-9 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold">
+                H
+            </div>
+            <span class="font-semibold text-gray-700">
+                HIC eVote
+            </span>
+        </div>
+
+        <!-- USER INFO -->
+        <div class="hidden md:flex items-center gap-3 text-sm text-gray-600">
+
+            <span class="px-3 py-1 bg-gray-100 rounded-full">
+                ID: {{ request.session.student_id }}
+            </span>
+
+            <a href="/accounts/logout/"
+               class="text-red-500 hover:text-red-600 font-medium flex items-center gap-1">
+                <span class="material-icons text-sm">logout</span>
+                Logout
+            </a>
+
+        </div>
+
+        <!-- MOBILE BUTTON -->
+        <button onclick="toggleMenu()" class="md:hidden text-gray-600">
+            <span class="material-icons">menu</span>
+        </button>
+
+    </div>
+</header>
+
+<!-- ================= LAYOUT ================= -->
+<div class="flex flex-1">
+
+    <!-- SIDEBAR -->
+    <aside class="w-64 bg-white border-r p-4 hidden md:block">
+
+        <div class="mb-4 p-3 rounded-lg border text-sm">
+
+                {% if status == "active" %}
+                    <div class="text-green-600 font-semibold">🟢 Election Active</div>
+
+                {% elif status == "upcoming" %}
+                    <div class="text-yellow-600 font-semibold">🟡 Upcoming Election</div>
+                    <p class="text-xs text-gray-500 mt-1">
+                        Starts: {{ election.start_time }}
+                    </p>
+
+                {% elif status == "closed" %}
+                    <div class="text-red-600 font-semibold">🔴 Election Closed</div>
+
+                {% else %}
+                    <div class="text-gray-500 font-semibold">No Election</div>
+                {% endif %}
+
+            </div>
+
+        <nav class="space-y-1">
+
+            <!-- DASHBOARD -->
+            <a href="/students/dashboard/"
+               class="flex items-center gap-3 px-3 py-2 rounded-lg bg-blue-50 text-blue-600 font-medium">
+                <span class="material-icons text-base">dashboard</span>
+                Dashboard
+            </a>
+
+            <!-- VOTE -->
+            <a href="{% url 'vote_page' %}"
+               class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700">
+                <span class="material-icons text-base">how_to_vote</span>
+                Vote Now
+            </a>
+
+            <!-- RESULTS -->
+            <a href="{% url 'student_result_page' %}"
+               class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700">
+                <span class="material-icons text-base">bar_chart</span>
+                Results
+            </a>
+
+            <!-- CANDIDATES -->
+            <a href="{% url 'student_candidate_list' %}"
+               class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700">
+                <span class="material-icons text-base">groups</span>
+                Candidates
+            </a>
+
+            <!-- PROFILE -->
+            <a href="/profile/"
+               class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700">
+                <span class="material-icons text-base">person</span>
+                My Profile
+            </a>
+
+        </nav>
+
+        <div class="mt-6 text-xs text-gray-400">
+            Secure Student Voting System
+        </div>
+
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 p-4 md:p-8">
+
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+</div>
+
+<!-- ================= MOBILE MENU ================= -->
+<div id="mobileMenu"
+     class="md:hidden hidden fixed inset-0 bg-black/40">
+
+    <div class="bg-white w-64 h-full p-4">
+
+        <button onclick="toggleMenu()" class="mb-4 text-gray-600 flex items-center gap-2">
+            <span class="material-icons">close</span>
+            Close
+        </button>
+
+        <nav class="space-y-2">
+
+            <a href="/students/dashboard/" class="flex items-center gap-2 p-2">
+                <span class="material-icons text-sm">dashboard</span>
+                Dashboard
+            </a>
+
+            <a href="/vote/" class="flex items-center gap-2 p-2">
+                <span class="material-icons text-sm">how_to_vote</span>
+                Vote Now
+            </a>
+
+            <a href="/results/" class="flex items-center gap-2 p-2">
+                <span class="material-icons text-sm">bar_chart</span>
+                Results
+            </a>
+
+            <a href="/candidates/" class="flex items-center gap-2 p-2">
+                <span class="material-icons text-sm">groups</span>
+                Candidates
+            </a>
+
+            <a href="/profile/" class="flex items-center gap-2 p-2">
+                <span class="material-icons text-sm">person</span>
+                Profile
+            </a>
+
+        </nav>
+
+    </div>
+</div>
+
+<!-- ================= SCRIPT ================= -->
+<script>
+    function toggleMenu() {
+        document.getElementById('mobileMenu').classList.toggle('hidden');
+    }
+</script>
+
+</body>
+</html>

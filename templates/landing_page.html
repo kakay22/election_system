@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <title>HIC eVote System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        body {
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="text-gray-800">
+
+    <!-- ================= BACKGROUND ================= -->
+    <div class="fixed inset-0 -z-20">
+        <div id="parallaxBg" class="absolute inset-0 bg-cover bg-center"
+            style="background-image: url('{% static 'images/bg.jpg' %}'); transform: scale(1.1);">
+        </div>
+
+        <!-- stronger gradient overlay -->
+        <div class="absolute inset-0 bg-gradient-to-br from-slate-900/80 via-slate-900/70 to-slate-800/80"></div>
+    </div>
+
+    <!-- ================= HEADER ================= -->
+    <header class="sticky top-0 z-50 backdrop-blur bg-white border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+
+            <h1 class="font-bold text-lg tracking-wide">
+                HIC eVote
+            </h1>
+
+            <nav class="hidden md:flex items-center gap-6 text-sm text-gray-200">
+                <a href="#" class="hover:text-white transition">Home</a>
+                <a href="#candidates" class="hover:text-white transition">Candidates</a>
+                <a href="#parties" class="hover:text-white transition">Parties</a>
+                <a href="#about" class="hover:text-white transition">About</a>
+            </nav>
+
+            <div class="flex items-center gap-3">
+                <a href="/accounts/login/"
+                    class="px-4 py-2 text-sm border border-gray-700 rounded-lg hover:bg-white/10 transition">
+                    Login
+                </a>
+                <a href="/accounts/register/"
+                    class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow transition">
+                    Register
+                </a>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- ================= HERO ================= -->
+    <section class="text-center py-24 px-4">
+
+        <div class="max-w-3xl mx-auto">
+
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 text-sm 
+            bg-white/10 backdrop-blur rounded-full border border-white/20 text-gray-200 mb-6">
+
+                <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                Official Digital Election Platform
+            </div>
+
+            <h1 class="text-5xl md:text-6xl font-extrabold text-white leading-tight mb-6">
+                Secure. Transparent. Trusted.
+            </h1>
+
+            <p class="text-gray-300 text-lg max-w-xl mx-auto mb-10">
+                Conducting fair and transparent elections for
+                <span class="text-white font-semibold">
+                    Holy Infant College of Tacloban City Inc.
+                </span>
+            </p>
+
+            <div class="flex justify-center gap-4">
+                <a href="/accounts/login/"
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-semibold shadow-lg transition">
+                    Vote Now
+                </a>
+
+                <a href="#candidates"
+                    class="bg-white/10 hover:bg-white/20 text-white px-8 py-3 rounded-xl font-semibold backdrop-blur transition">
+                    View Candidates
+                </a>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ================= COUNTDOWN (MOBILE-FIRST) ================= -->
+    <section class="max-w-4xl mx-auto px-4 mb-20">
+
+        <div class="bg-white/90 backdrop-blur border rounded-3xl p-5 sm:p-8 text-center shadow-xl">
+
+            <!-- TITLE -->
+            <h2 class="text-base sm:text-lg font-semibold mb-1 sm:mb-2">
+                Election Countdown
+            </h2>
+
+            <p class="text-xs sm:text-sm text-gray-500 mb-5 sm:mb-6">
+                {% if countdown_type == "starts_in" %}
+                🟡 Election starts in
+                {% elif countdown_type == "ends_in" %}
+                🔴 Election ends in
+                {% else %}
+                ⚫ Election closed
+                {% endif %}
+            </p>
+
+            <!-- COUNTDOWN GRID -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+
+                <!-- DAYS -->
+                <div class="bg-white rounded-xl py-4 shadow-sm">
+                    <p id="days" class="text-2xl sm:text-3xl font-bold text-blue-600">00</p>
+                    <p class="text-[10px] sm:text-xs text-gray-500">Days</p>
+                </div>
+
+                <!-- HOURS -->
+                <div class="bg-white rounded-xl py-4 shadow-sm">
+                    <p id="hours" class="text-2xl sm:text-3xl font-bold text-blue-600">00</p>
+                    <p class="text-[10px] sm:text-xs text-gray-500">Hours</p>
+                </div>
+
+                <!-- MINUTES -->
+                <div class="bg-white rounded-xl py-4 shadow-sm">
+                    <p id="minutes" class="text-2xl sm:text-3xl font-bold text-blue-600">00</p>
+                    <p class="text-[10px] sm:text-xs text-gray-500">Minutes</p>
+                </div>
+
+                <!-- SECONDS -->
+                <div class="bg-white rounded-xl py-4 shadow-sm">
+                    <p id="seconds" class="text-2xl sm:text-3xl font-bold text-blue-600">00</p>
+                    <p class="text-[10px] sm:text-xs text-gray-500">Seconds</p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ================= STATS ================= -->
+    <section class="max-w-5xl mx-auto px-4 mb-20">
+
+        <div class="grid md:grid-cols-3 gap-6">
+
+            <div class="bg-white/90 backdrop-blur rounded-2xl p-6 shadow text-center">
+                <p class="text-3xl font-bold text-blue-600">{{ total_votes }}</p>
+                <p class="text-sm text-gray-500">Total Votes</p>
+            </div>
+
+            <div class="bg-white/90 backdrop-blur rounded-2xl p-6 shadow text-center">
+                <p class="text-3xl font-bold text-green-600">{{ total_candidates }}</p>
+                <p class="text-sm text-gray-500">Candidates</p>
+            </div>
+
+            <div class="bg-white/90 backdrop-blur rounded-2xl p-6 shadow text-center">
+                <p class="text-3xl font-bold text-purple-600">{{ total_parties }}</p>
+                <p class="text-sm text-gray-500">Party Lists</p>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ================= CANDIDATES + PARTIES ================= -->
+    <section id="candidates" class="max-w-6xl mx-auto px-4 mb-20">
+
+        <!-- Header + Controls -->
+        <div class="flex flex-col gap-4 mb-8">
+
+            <div class="flex justify-between items-center">
+                <h2 class="text-2xl font-bold text-white">Election Overview</h2>
+
+                <div class="flex bg-white/10 backdrop-blur rounded-xl p-1 border border-white/20">
+                    <button id="tabCandidates"
+                        class="px-4 py-2 text-xs md:text-sm font-medium rounded-lg bg-white text-gray-800 shadow">
+                        Candidates
+                    </button>
+                    <button id="tabParties" class="px-4 py-2 text-xs md:text-sm font-medium rounded-lg text-white">
+                        Party Lists
+                    </button>
+                </div>
+            </div>
+
+            <!-- SEARCH + FILTER -->
+            <div class="flex flex-col md:flex-row gap-3">
+
+                <!-- Search -->
+                <input type="text" id="searchInput" placeholder="Search candidate..."
+                    class="w-full md:w-1/2 px-4 py-2 rounded-xl border bg-white/90 focus:outline-none">
+
+                <select id="positionFilter" class="px-4 py-2 rounded-xl border bg-white/90 focus:outline-none">
+                    <option value="">All Positions</option>
+                    {% for pos in positions %}
+                    <option value="{{ pos }}">{{ pos }}</option>
+                    {% endfor %}
+                </select>
+
+            </div>
+
+        </div>
+
+        <!-- ================= CANDIDATES GRID ================= -->
+        <div id="candidatesContent" class="grid md:grid-cols-3 gap-6">
+
+            {% for candidate in candidates %}
+            <div class="candidate-card bg-white rounded-2xl p-5 shadow hover:shadow-2xl transition"
+                data-name="{{ candidate.full_name|lower }}" data-position="{{ candidate.position.name }}">
+
+                <div class="flex items-center gap-4">
+
+                    {% if candidate.photo %}
+                    <img src="{{ candidate.photo.url }}" class="w-14 h-14 rounded-full object-cover">
+                    {% else %}
+                    <div
+                        class="w-14 h-14 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold">
+                        {{ candidate.full_name|slice:":1" }}
+                    </div>
+                    {% endif %}
+
+                    <div>
+                        <h3 class="font-semibold">{{ candidate.full_name }}</h3>
+                        <p class="text-xs text-gray-500">{{ candidate.position.name }}</p>
+                    </div>
+
+                </div>
+
+                <!-- Votes -->
+                <div class="mt-3 text-sm text-gray-600">
+                    🗳️ Votes:
+                    <span class="font-semibold text-blue-600 vote-count" data-id="{{ candidate.id }}">
+                        {{ candidate.votes_count|default:0 }}
+                    </span>
+                </div>
+
+                <div class="mt-4 flex justify-between items-center">
+                    <span class="text-xs bg-blue-100 text-blue-600 px-3 py-1 rounded-full">
+                        {{ candidate.party.name }}
+                    </span>
+
+                    <button class="viewBtn text-xs text-blue-600 hover:underline" data-name="{{ candidate.full_name }}"
+                        data-position="{{ candidate.position.name }}"
+                        data-party="{{ candidate.party.name|default:'Independent' }}"
+                        data-votes="{{ candidate.votes_count|default:0 }}"
+                        data-photo="{% if candidate.photo %}{{ candidate.photo.url }}{% endif %}"
+                        data-description="{{ candidate.campaign_description|escapejs }}"
+                        data-platform="{{ candidate.platform|default:''|escapejs }}"
+                        data-qualifications="{{ candidate.qualifications|default:''|escapejs }}"
+                        data-achievements="{{ candidate.achievements|default:''|escapejs }}"
+                        data-eligibility="{{ candidate.eligibility|default:''|escapejs }}"
+                        data-course="{{ candidate.course|default:'N/A' }}"
+                        data-year="{{ candidate.year_level|default:'N/A' }}">
+                        View →
+                    </button>
+                </div>
+
+            </div>
+            {% endfor %}
+
+        </div>
+
+        <!-- ================= PARTIES ================= -->
+        <div id="partiesContent" class="grid md:grid-cols-3 gap-6 hidden">
+            {% for party in parties %}
+            <div class="bg-white rounded-2xl p-5 shadow">
+                <h3 class="font-semibold text-lg">{{ party.name }}</h3>
+                <p class="text-sm text-gray-500 mt-2">
+                    {{ party.description|default:"No description available." }}
+                </p>
+            </div>
+            {% endfor %}
+        </div>
+
+    </section>
+
+    <!-- ================= CTA ================= -->
+    <section class="text-center py-20">
+
+        <h2 class="text-3xl font-bold text-white mb-6">
+            Your Vote Matters
+        </h2>
+
+        <p class="text-gray-300 mb-8">
+            Participate and make your voice count in this election.
+        </p>
+
+        <a href="/accounts/login/"
+            class="bg-blue-600 hover:bg-blue-700 text-white px-10 py-4 rounded-xl font-semibold shadow-lg transition">
+            Get Started
+        </a>
+
+    </section>
+
+    <!-- ================= SCRIPT ================= -->
+    <script>
+        const targetDate = new Date("{{ target_date|date:'Y-m-d H:i:s' }}").getTime();
+
+        function updateCountdown() {
+            if (!targetDate) return;
+
+            const now = new Date().getTime();
+            const diff = targetDate - now;
+
+            if (diff <= 0) return;
+
+            document.getElementById("days").innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
+            document.getElementById("hours").innerText = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            document.getElementById("minutes").innerText = Math.floor((diff / (1000 * 60)) % 60);
+            document.getElementById("seconds").innerText = Math.floor((diff / 1000) % 60);
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+    </script>
+
+    <!--tab filter party list-->
+    <script>
+        const tabCandidates = document.getElementById("tabCandidates");
+        const tabParties = document.getElementById("tabParties");
+
+        const candidatesContent = document.getElementById("candidatesContent");
+        const partiesContent = document.getElementById("partiesContent");
+
+        function activateTab(active, inactive, show, hide) {
+            active.classList.add("bg-white", "text-gray-800", "shadow");
+            active.classList.remove("text-white");
+
+            inactive.classList.remove("bg-white", "text-gray-800", "shadow");
+            inactive.classList.add("text-white");
+
+            show.classList.remove("hidden");
+            hide.classList.add("hidden");
+        }
+
+        tabCandidates.addEventListener("click", () => {
+            activateTab(tabCandidates, tabParties, candidatesContent, partiesContent);
+        });
+
+        tabParties.addEventListener("click", () => {
+            activateTab(tabParties, tabCandidates, partiesContent, candidatesContent);
+        });
+    </script>
+
+    <!-- ================= PREMIUM CANDIDATE MODAL ================= -->
+    <div id="candidateModal"
+        class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+
+        <div class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden animate-fadeIn">
+
+            <!-- HEADER -->
+            <div class="p-6 border-b flex items-center gap-4">
+
+                <img id="modalPhoto" class="w-16 h-16 rounded-full object-cover border" src="" alt="Candidate">
+
+                <div>
+                    <h2 id="modalName" class="text-xl font-bold"></h2>
+                    <p id="modalPosition" class="text-sm text-gray-500"></p>
+                </div>
+
+                <div class="ml-auto text-right">
+                    <p class="text-xs text-gray-400">Votes</p>
+                    <p id="modalVotes" class="text-lg font-bold text-blue-600"></p>
+                </div>
+
+            </div>
+
+            <!-- BODY -->
+            <div class="p-6 space-y-5 max-h-[65vh] overflow-y-auto">
+
+                <!-- TAGS -->
+                <div class="flex flex-wrap gap-2 text-xs">
+                    <span id="modalParty" class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full"></span>
+
+                    <span id="modalCourse" class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full"></span>
+
+                    <span id="modalYear" class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full"></span>
+                </div>
+
+                <!-- DESCRIPTION -->
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-500 mb-1">About</h3>
+                    <p id="modalDescription" class="text-sm text-gray-700 leading-relaxed"></p>
+                </div>
+
+                <!-- PLATFORM -->
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-500 mb-1">Platform</h3>
+                    <p id="modalPlatform" class="text-sm text-gray-700"></p>
+                </div>
+
+                <!-- QUALIFICATIONS -->
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-500 mb-1">Qualifications</h3>
+                    <p id="modalQualifications" class="text-sm text-gray-700"></p>
+                </div>
+
+                <!-- ACHIEVEMENTS -->
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-500 mb-1">Achievements</h3>
+                    <p id="modalAchievements" class="text-sm text-gray-700"></p>
+                </div>
+
+                <!-- ELIGIBILITY -->
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-500 mb-1">Eligibility</h3>
+                    <p id="modalEligibility" class="text-sm text-gray-700"></p>
+                </div>
+
+            </div>
+
+            <!-- FOOTER -->
+            <div class="p-4 border-t flex justify-end">
+                <button onclick="closeModal()"
+                    class="px-6 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition">
+                    Close
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+        // SEARCH + FILTER
+        const searchInput = document.getElementById("searchInput");
+        const positionFilter = document.getElementById("positionFilter");
+        const cards = document.querySelectorAll(".candidate-card");
+
+        function filterCandidates() {
+            const search = searchInput.value.toLowerCase();
+            const position = positionFilter.value;
+
+            cards.forEach(card => {
+                const name = card.dataset.name;
+                const pos = card.dataset.position;
+
+                const matchSearch = name.includes(search);
+                const matchPos = !position || pos === position;
+
+                card.style.display = (matchSearch && matchPos) ? "block" : "none";
+            });
+        }
+
+        searchInput.addEventListener("input", filterCandidates);
+        positionFilter.addEventListener("change", filterCandidates);
+
+        // TABS (safe)
+
+        tabCandidates.onclick = () => {
+            candidatesContent.classList.remove("hidden");
+            partiesContent.classList.add("hidden");
+        };
+
+        tabParties.onclick = () => {
+            partiesContent.classList.remove("hidden");
+            candidatesContent.classList.add("hidden");
+        };
+    </script>
+
+    <!-- MODAL SCRIPT-->
+    <script>
+        const modal = document.getElementById("candidateModal");
+
+        // 🔥 Track currently opened candidate (for live updates)
+        let currentCandidateId = null;
+
+        document.querySelectorAll(".viewBtn").forEach(btn => {
+            btn.addEventListener("click", () => {
+
+                currentCandidateId = btn.dataset.id;
+
+                // ================= BASIC INFO =================
+                document.getElementById("modalName").innerText = btn.dataset.name || "N/A";
+                document.getElementById("modalPosition").innerText = btn.dataset.position || "N/A";
+                document.getElementById("modalParty").innerText = btn.dataset.party || "Independent";
+                document.getElementById("modalVotes").innerText = btn.dataset.votes || 0;
+
+                // ================= ACADEMIC INFO =================
+                document.getElementById("modalCourse").innerText = btn.dataset.course || "N/A";
+                document.getElementById("modalYear").innerText = btn.dataset.year || "N/A";
+
+                // ================= DETAILS =================
+                document.getElementById("modalDescription").innerText = btn.dataset.description || "No description provided.";
+                document.getElementById("modalPlatform").innerText = btn.dataset.platform || "No platform provided.";
+                document.getElementById("modalQualifications").innerText = btn.dataset.qualifications || "N/A";
+                document.getElementById("modalAchievements").innerText = btn.dataset.achievements || "N/A";
+                document.getElementById("modalEligibility").innerText = btn.dataset.eligibility || "N/A";
+
+                // ================= PHOTO =================
+                const photo = btn.dataset.photo;
+                document.getElementById("modalPhoto").src =
+                    photo && photo.trim() !== ""
+                        ? photo
+                        : "https://ui-avatars.com/api/?name=" + encodeURIComponent(btn.dataset.name || "Candidate");
+
+                // ================= SHOW MODAL =================
+                modal.classList.remove("hidden");
+                modal.classList.add("flex");
+            });
+        });
+
+        // ================= CLOSE MODAL =================
+        function closeModal() {
+            modal.classList.add("hidden");
+            currentCandidateId = null;
+        }
+
+        /* ================= LIVE VOTE SYNC (OPTIONAL BUT POWERFUL) ================= */
+        async function updateVotes() {
+            try {
+                const res = await fetch("/live-votes/");
+                const data = await res.json();
+
+                document.querySelectorAll(".vote-count").forEach(el => {
+                    const id = el.dataset.id;
+
+                    if (data[id] !== undefined) {
+                        el.innerText = data[id];
+
+                        // 🔥 Update modal live if same candidate is open
+                        if (currentCandidateId == id) {
+                            document.getElementById("modalVotes").innerText = data[id];
+                        }
+                    }
+                });
+
+            } catch (err) {
+                console.log("Live vote update failed:", err);
+            }
+        }
+
+        // 🔥 Auto refresh votes every 3 seconds
+        setInterval(updateVotes, 3000);
+        updateVotes();
+
+    </script>
+
+    <!-- ================= LIVE VOTE UPDATES (POLLING) ================= -->
+    <script>
+        async function updateVotes() {
+            try {
+                const res = await fetch("/live-votes/");
+                const data = await res.json();
+
+                document.querySelectorAll(".vote-count").forEach(el => {
+                    const id = el.dataset.id;
+                    if (data[id] !== undefined) {
+                        el.innerText = data[id];
+                    }
+                });
+
+            } catch (err) {
+                console.log("Vote update failed", err);
+            }
+        }
+
+        // update every 3 seconds
+        setInterval(updateVotes, 3000);
+        updateVotes();
+    </script>
+
+</body>
+
+</html>

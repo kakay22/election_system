@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Registration</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+<div class="bg-white p-8 rounded-xl shadow-md w-full max-w-md">
+
+    <h2 class="text-2xl font-bold mb-6 text-center">Student Registration</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <input type="text" name="student_id" placeholder="Student ID"
+               class="w-full p-2 mb-3 border rounded" required>
+
+        <input type="text" name="first_name" placeholder="First Name"
+               class="w-full p-2 mb-3 border rounded" required>
+
+        <input type="text" name="last_name" placeholder="Last Name"
+               class="w-full p-2 mb-3 border rounded" required>
+
+        <input type="text" name="course" placeholder="Course"
+               class="w-full p-2 mb-3 border rounded" required>
+
+        <input type="number" name="year_level" placeholder="Year Level"
+               class="w-full p-2 mb-3 border rounded" required>
+
+        <input type="password" name="password" placeholder="Password"
+               class="w-full p-2 mb-4 border rounded" required>
+
+        <button class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
+            Register
+        </button>
+    </form>
+
+    <p class="text-sm text-center mt-4">
+        Already have an account?
+        <a href="/accounts/login/" class="text-blue-600">Login</a>
+    </p>
+
+</div>
+
+</body>
+</html>

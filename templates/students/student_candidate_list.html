@@ -1,0 +1,95 @@
+{% extends "students/student_base.html" %}
+
+{% block content %}
+
+<div class="space-y-6">
+
+    <!-- HEADER -->
+    <div>
+        <h1 class="text-3xl font-bold text-gray-800">
+            👥 Candidates List
+        </h1>
+        <p class="text-gray-500 text-sm">
+            View all candidates per position before casting your vote
+        </p>
+    </div>
+
+    <!-- ELECTION INFO -->
+    <div class="bg-white border rounded-xl p-4 shadow-sm">
+        <p class="text-sm text-gray-600">
+            🏛 Election:
+            <span class="font-semibold text-gray-800">
+                {{ election.title }}
+            </span>
+        </p>
+    </div>
+
+    <!-- LOOP POSITIONS -->
+    {% for position in election.positions.all %}
+
+    <div class="bg-white border rounded-xl shadow-sm p-5">
+
+        <!-- POSITION TITLE -->
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">
+            {{ position.name }}
+        </h2>
+
+        <!-- CANDIDATES GRID -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+            {% for candidate in candidates %}
+                {% if candidate.position_id == position.id %}
+
+                <!-- CANDIDATE CARD -->
+                <a href="{% url 'candidate_detail' id=candidate.id %}" class="border rounded-xl p-4 bg-gray-50 hover:shadow-md transition">
+
+                    <!-- HEADER -->
+                    <div class="flex items-center gap-3">
+
+                        <!-- AVATAR -->
+                        {% if candidate.photo %}
+                        <img src="{{ candidate.photo.url }}"
+                            class="w-12 h-12 rounded-full object-cover shadow-lg">
+                        {% else %}
+                        <div class="w-12 h-12 rounded-full shadow-lg
+                                    bg-blue-600 flex items-center justify-center text-white text-2xl font-bold">
+                            {{ candidate.full_name|slice:":1"|upper }}
+                        </div>
+                        {% endif %}
+
+                        <!-- NAME -->
+                        <div>
+                            <p class="font-semibold text-gray-800">
+                                {{ candidate.full_name }}
+                            </p>
+                            <p class="text-xs text-gray-500">
+                                {{ candidate.partylist }}
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <!-- CAMPAIGN -->
+                    <p class="text-sm text-gray-600 mt-3 leading-relaxed">
+                        {{ candidate.campaign_description }}
+                    </p>
+
+                </a>
+
+                {% endif %}
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+    <!-- FOOTER NOTE -->
+    <div class="text-xs text-gray-500 text-center mt-6">
+        ⚠️ Candidates are listed as submitted by the election committee. Information cannot be modified by students.
+    </div>
+
+</div>
+
+{% endblock %}
