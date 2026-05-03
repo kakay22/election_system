@@ -1,48 +1,263 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+{% load static %}
+
 <head>
-    <title>Student Registration</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+       <meta charset="UTF-8">
+       <title>Student Registration</title>
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+       <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+       <script src="https://cdn.tailwindcss.com"></script>
+
+       <style>
+              body {
+                     min-height: 100vh;
+                     font-family: 'Inter', sans-serif;
+              }
+
+              .fade-in {
+                     animation: fadeIn 0.6s ease forwards;
+              }
+
+              @keyframes fadeIn {
+                     from {
+                            opacity: 0;
+                            transform: translateY(20px) scale(0.98);
+                     }
+
+                     to {
+                            opacity: 1;
+                            transform: translateY(0) scale(1);
+                     }
+              }
+
+              .input-style {
+                     width: 100%;
+                     padding: 1.2rem 1rem 0.5rem;
+                     border-radius: 0.75rem;
+                     border: 1px solid #e5e7eb;
+                     background: rgba(255, 255, 255, 0.85);
+                     outline: none;
+                     transition: 0.2s;
+              }
+
+              .input-valid {
+                     border-color: #22c55e !important;
+              }
+
+              .input-error {
+                     border-color: #ef4444 !important;
+              }
+
+              .floating-label {
+                     position: absolute;
+                     left: 1rem;
+                     top: 0.5rem;
+                     font-size: 0.75rem;
+                     color: #6b7280;
+                     transition: 0.2s;
+              }
+
+              .peer-placeholder-shown+.floating-label {
+                     top: 0.9rem;
+                     font-size: 0.875rem;
+                     color: #9ca3af;
+              }
+
+              .peer:focus+.floating-label {
+                     top: 0.5rem;
+                     font-size: 0.75rem;
+                     color: #2563eb;
+              }
+       </style>
 </head>
 
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+<body class="text-gray-800 flex items-center justify-center p-4 sm:p-6">
 
-<div class="bg-white p-8 rounded-xl shadow-md w-full max-w-md">
+       <!-- BACKGROUND -->
+       <div class="fixed inset-0 -z-20">
+              <div class="absolute inset-0 bg-cover bg-center"
+                     style="background-image: url('{% static 'images/bg.jpg' %}'); transform: scale(1.1);">
+              </div>
+              <div class="absolute inset-0 bg-gradient-to-br from-slate-900/80 via-slate-900/70 to-slate-800/80"></div>
+       </div>
 
-    <h2 class="text-2xl font-bold mb-6 text-center">Student Registration</h2>
+       <!-- ================= ALERT MESSAGE (REGISTER - RESPONSIVE PREMIUM) ================= -->
+       {% if messages %}
+       <div id="alertBox" class="fixed z-50 space-y-2 w-full max-w-sm
+    left-1/2 -translate-x-1/2 bottom-5
+    md:left-auto md:translate-x-0 md:right-5 md:top-5 md:bottom-auto">
 
-    <form method="POST">
-        {% csrf_token %}
+              {% for message in messages %}
+              <div class="relative flex items-start justify-between gap-3 px-4 py-3 rounded-xl shadow-lg text-sm fade-in
+        {% if message.tags == 'error' %}
+            bg-red-50/95 border border-red-200 text-red-700
+        {% elif message.tags == 'success' %}
+            bg-green-50/95 border border-green-200 text-green-700
+        {% else %}
+            bg-blue-50/95 border border-blue-200 text-blue-700
+        {% endif %}">
 
-        <input type="text" name="student_id" placeholder="Student ID"
-               class="w-full p-2 mb-3 border rounded" required>
+                     <!-- MESSAGE TEXT -->
+                     <span class="pr-6 leading-snug">
+                            {{ message }}
+                     </span>
 
-        <input type="text" name="first_name" placeholder="First Name"
-               class="w-full p-2 mb-3 border rounded" required>
+                     <!-- CLOSE BUTTON -->
+                     <button onclick="this.parentElement.remove()"
+                            class="absolute top-2 right-2 text-gray-500 hover:text-gray-800 transition">
+                            <span class="material-icons text-sm">close</span>
+                     </button>
 
-        <input type="text" name="last_name" placeholder="Last Name"
-               class="w-full p-2 mb-3 border rounded" required>
+              </div>
+              {% endfor %}
 
-        <input type="text" name="course" placeholder="Course"
-               class="w-full p-2 mb-3 border rounded" required>
+       </div>
+       {% endif %}
 
-        <input type="number" name="year_level" placeholder="Year Level"
-               class="w-full p-2 mb-3 border rounded" required>
+       <!-- CARD -->
+       <div class="w-full max-w-md mx-auto fade-in">
 
-        <input type="password" name="password" placeholder="Password"
-               class="w-full p-2 mb-4 border rounded" required>
+              <div class="bg-white/90 backdrop-blur-xl p-6 sm:p-8 rounded-3xl shadow-2xl border border-white/20">
 
-        <button class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
-            Register
-        </button>
-    </form>
+                     <!-- LOGO -->
+                     <div class="text-center mb-6">
+                            <div
+                                   class="text-white bg-blue-600 w-12 h-12 mx-auto rounded-full flex items-center justify-center font-bold shadow-lg">
+                                   HIC
+                            </div>
+                            <h1 class="mt-3 text-lg font-semibold text-gray-800">HIC eVote</h1>
+                     </div>
 
-    <p class="text-sm text-center mt-4">
-        Already have an account?
-        <a href="/accounts/login/" class="text-blue-600">Login</a>
-    </p>
+                     <h2 class="text-xl font-bold mb-6 text-center">Student Registration</h2>
 
-</div>
+                     <!-- FORM -->
+                     <form method="POST" id="registerForm" class="space-y-5">
+                            {% csrf_token %}
+
+                            <!-- Student ID -->
+                            <div class="relative">
+                                   <input type="text" name="student_id" required class="peer input-style"
+                                          placeholder="Student ID">
+                                   <label class="floating-label">Student ID</label>
+                            </div>
+
+                            <!-- First Name -->
+                            <div class="relative">
+                                   <input type="text" name="first_name" required class="peer input-style"
+                                          placeholder="First Name">
+                                   <label class="floating-label">First Name</label>
+                            </div>
+
+                            <!-- Last Name -->
+                            <div class="relative">
+                                   <input type="text" name="last_name" required class="peer input-style"
+                                          placeholder="Last Name">
+                                   <label class="floating-label">Last Name</label>
+                            </div>
+
+                            <!-- Course -->
+                            <div class="relative">
+                                   <input type="text" name="course" required class="peer input-style"
+                                          placeholder="Course">
+                                   <label class="floating-label">Course</label>
+                            </div>
+
+                            <!-- Year -->
+                            <div class="relative">
+                                   <input type="number" name="year_level" required class="peer input-style"
+                                          placeholder="Year Level">
+                                   <label class="floating-label">Year Level</label>
+                            </div>
+
+                            <!-- PASSWORD WITH TOGGLE -->
+                            <div class="relative">
+                                   <input type="password" name="password" id="password" required
+                                          class="peer input-style pr-10" placeholder="Password">
+
+                                   <label class="floating-label">Password</label>
+
+                                   <button type="button" id="togglePassword"
+                                          class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition">
+
+                                          <span id="eyeIcon" class="material-icons text-[20px]">
+                                                 visibility
+                                          </span>
+
+                                   </button>
+                            </div>
+
+                            <!-- BUTTON -->
+                            <button id="submitBtn"
+                                   class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-xl font-medium shadow-lg transition active:scale-[0.98] flex justify-center items-center gap-2">
+
+                                   <span id="btnText">Register</span>
+
+                                   <!-- LOADER -->
+                                   <svg id="loader" class="hidden w-4 h-4 animate-spin" viewBox="0 0 24 24">
+                                          <circle cx="12" cy="12" r="10" stroke="white" stroke-width="4" fill="none" />
+                                   </svg>
+                            </button>
+
+                     </form>
+
+                     <p class="text-sm text-center mt-5 text-gray-600">
+                            Already have an account?
+                            <a href="/accounts/login/" class="text-blue-600 font-medium hover:underline">
+                                   Login
+                            </a>
+                     </p>
+
+              </div>
+
+       </div>
+
+       <!-- ================= JS ================= -->
+       <script>
+              const form = document.getElementById("registerForm");
+              const inputs = document.querySelectorAll("input");
+              const btn = document.getElementById("submitBtn");
+              const loader = document.getElementById("loader");
+              const btnText = document.getElementById("btnText");
+
+              /* REAL-TIME VALIDATION */
+              inputs.forEach(input => {
+                     input.addEventListener("input", () => {
+                            if (input.value.trim().length > 0) {
+                                   input.classList.add("input-valid");
+                                   input.classList.remove("input-error");
+                            } else {
+                                   input.classList.add("input-error");
+                                   input.classList.remove("input-valid");
+                            }
+                     });
+              });
+
+              /* PASSWORD TOGGLE */
+              const toggleBtn = document.getElementById("togglePassword");
+              const passwordInput = document.getElementById("password");
+              const eyeIcon = document.getElementById("eyeIcon");
+
+              toggleBtn.addEventListener("click", () => {
+                     if (passwordInput.type === "password") {
+                            passwordInput.type = "text";
+                            eyeIcon.textContent = "visibility_off";
+                     } else {
+                            passwordInput.type = "password";
+                            eyeIcon.textContent = "visibility";
+                     }
+              });
+
+              /* LOADING STATE */
+              form.addEventListener("submit", () => {
+                     btn.disabled = true;
+                     loader.classList.remove("hidden");
+                     btnText.innerText = "Registering...";
+              });
+       </script>
 
 </body>
+
 </html>
