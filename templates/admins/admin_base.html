@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Panel</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            background: #f8fafc;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col md:flex-row">
+
+<!-- ================= MOBILE TOPBAR ================= -->
+<header class="md:hidden flex items-center justify-between px-4 h-14 bg-white border-b">
+    <button id="menuBtn" class="material-icons text-gray-700">menu</button>
+    <h1 class="text-sm font-semibold">Admin Panel</h1>
+    <span class="material-icons text-gray-500">account_circle</span>
+</header>
+
+<!-- ================= SIDEBAR ================= -->
+<aside id="sidebar"
+       class="fixed md:sticky top-0 left-0 h-screen w-64 
+              bg-gradient-to-b from-white to-gray-50
+              border-r border-gray-200 
+              flex flex-col
+              transform -translate-x-full md:translate-x-0
+              transition-transform duration-300 z-50">
+
+    <!-- BRAND -->
+    <div class="h-16 flex items-center px-6 border-b border-gray-100">
+        <h2 class="text-lg font-semibold text-gray-800 tracking-tight">
+            eVote Admin
+        </h2>
+    </div>
+
+    <!-- NAV -->
+    <nav class="flex-1 px-3 py-4 space-y-1 text-sm">
+
+        <a href="{% url 'admin_dashboard' %}" data-url="{% url 'admin_dashboard' %}"
+           class="navLink group relative flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-gray-100">
+
+            <span class="absolute left-0 top-2 bottom-2 w-1 bg-indigo-500 rounded-r-lg opacity-0 group-hover:opacity-100"></span>
+            <span class="material-icons text-[20px]">dashboard</span>
+            <span>Dashboard</span>
+        </a>
+
+        <a href="{% url 'admin_candidate_list' %}" data-url="{% url 'admin_candidate_list' %}"
+           class="navLink group relative flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-gray-100">
+
+            <span class="absolute left-0 top-2 bottom-2 w-1 bg-indigo-500 rounded-r-lg opacity-0 group-hover:opacity-100"></span>
+            <span class="material-icons text-[20px]">groups</span>
+            <span>Candidates</span>
+        </a>
+
+        <a href="{% url 'admin_election_list' %}" data-url="{% url 'admin_election_list' %}"
+           class="navLink group relative flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-gray-100">
+
+            <span class="absolute left-0 top-2 bottom-2 w-1 bg-indigo-500 rounded-r-lg opacity-0 group-hover:opacity-100"></span>
+            <span class="material-icons text-[20px]">how_to_vote</span>
+            <span>Elections</span>
+        </a>
+
+    </nav>
+
+    <!-- FOOTER -->
+    <div class="p-4 border-t border-gray-100">
+
+        <a href="{% url 'logout' %}"
+           class="flex items-center justify-center gap-2 w-full 
+                  bg-red-50 text-red-500 py-2 rounded-lg text-sm 
+                  hover:bg-red-100 transition">
+            <span class="material-icons text-[18px]">logout</span>
+            Logout
+        </a>
+
+    </div>
+
+</aside>
+
+<!-- OVERLAY -->
+<div id="overlay" class="fixed inset-0 bg-black/40 hidden md:hidden"></div>
+
+<!-- ================= MAIN ================= -->
+<div class="flex-1 flex flex-col">
+
+    <!-- DESKTOP TOPBAR -->
+    <header class="hidden md:flex h-16 bg-white border-b items-center justify-between px-6">
+        <h1 class="text-lg font-medium">Admin Panel</h1>
+        <div class="flex items-center gap-4">
+            <span class="material-icons">notifications</span>
+            <div class="w-9 h-9 bg-gray-200 rounded-full flex items-center justify-center text-sm">
+                A
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENT -->
+    <main id="mainContent" class="flex-1 p-4 md:p-6">
+        <div class="max-w-7xl mx-auto">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+</div>
+
+<!-- ================= MOBILE NAV ================= -->
+<div id="mobileNav"
+     class="md:hidden fixed bottom-4 left-1/2 -translate-x-1/2 
+            w-[92%] max-w-md 
+            bg-white/80 backdrop-blur-lg 
+            border border-gray-200 
+            shadow-xl rounded-2xl 
+            px-2 py-2 
+            flex justify-between items-center
+            transition-all duration-300">
+
+    <span id="navIndicator"
+          class="absolute bottom-1 left-0 w-16 h-1 bg-indigo-500 rounded-full transition-all duration-300"></span>
+
+    <a href="{% url 'admin_dashboard' %}" class="navItem flex-1 flex flex-col items-center text-xs py-1">
+        <span class="material-icons">dashboard</span>
+        Dashboard
+    </a>
+
+    <a href="{% url 'admin_candidate_list' %}" class="navItem flex-1 flex flex-col items-center text-xs py-1">
+        <span class="material-icons">groups</span>
+        Candidates
+    </a>
+
+    <a href="{% url 'admin_election_list' %}" class="navItem flex-1 flex flex-col items-center text-xs py-1">
+        <span class="material-icons">how_to_vote</span>
+        Elections
+    </a>
+
+    <a href="{% url 'logout' %}" class="navItem flex-1 flex flex-col items-center text-red-500 text-xs py-1">
+        <span class="material-icons">logout</span>
+        Logout
+    </a>
+
+</div>
+
+<!-- ================= SCRIPTS ================= -->
+<script>
+    const menuBtn = document.getElementById("menuBtn");
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("overlay");
+
+    menuBtn?.addEventListener("click", () => {
+        sidebar.classList.toggle("-translate-x-full");
+        overlay.classList.toggle("hidden");
+    });
+
+    overlay?.addEventListener("click", () => {
+        sidebar.classList.add("-translate-x-full");
+        overlay.classList.add("hidden");
+    });
+</script>
+
+<script>
+    const nav = document.getElementById("mobileNav");
+    const indicator = document.getElementById("navIndicator");
+    const items = document.querySelectorAll(".navItem");
+
+    function setActive(el) {
+        items.forEach(i => i.classList.remove("text-indigo-500"));
+        el.classList.add("text-indigo-500");
+
+        indicator.style.width = el.offsetWidth + "px";
+        indicator.style.left = el.offsetLeft + "px";
+    }
+
+    items.forEach(item => {
+        item.addEventListener("click", () => setActive(item));
+    });
+
+    // AUTO ACTIVE BASED ON URL
+    const current = window.location.pathname;
+
+    items.forEach(item => {
+        const link = item.getAttribute("href");
+        if (current === link) {
+            setTimeout(() => setActive(item), 100);
+        }
+    });
+
+    // SCROLL BEHAVIOR
+    let lastScroll = window.scrollY;
+
+    window.addEventListener("scroll", () => {
+        if (window.scrollY > lastScroll) {
+            nav.style.transform = "translate(-50%, 100px)";
+            nav.style.opacity = "0";
+        } else {
+            nav.style.transform = "translate(-50%, 0)";
+            nav.style.opacity = "1";
+        }
+        lastScroll = window.scrollY;
+    });
+
+    // TAP TO SHOW NAV
+    document.addEventListener("click", (e) => {
+        if (!nav.contains(e.target)) {
+            nav.style.opacity = "1";
+            nav.style.transform = "translate(-50%, 0)";
+        }
+    });
+</script>
+
+<script>
+    function adjustBottomSpacing() {
+        const nav = document.getElementById("mobileNav");
+        const main = document.getElementById("mainContent");
+
+        if (!nav || !main) return;
+
+        if (window.innerWidth < 768) {
+            main.style.paddingBottom = (nav.offsetHeight + 24) + "px";
+        } else {
+            main.style.paddingBottom = "";
+        }
+    }
+
+    window.addEventListener("load", adjustBottomSpacing);
+    window.addEventListener("resize", adjustBottomSpacing);
+</script>
+
+</body>
+</html>

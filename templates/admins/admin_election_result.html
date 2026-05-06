@@ -1,0 +1,97 @@
+{% extends "admins/admin_base.html" %}
+
+{% block content %}
+
+<div class="mb-6">
+    <h1 class="text-2xl font-bold text-gray-800">
+        🏆 Election Results
+    </h1>
+
+    <p class="text-gray-500 text-sm mt-1">
+        {{ election.title }}
+    </p>
+</div>
+
+<!-- ================= ELECTION SUMMARY ================= -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+
+    <div class="bg-white p-4 rounded-xl border">
+        <p class="text-xs text-gray-500">Total Votes</p>
+        <p class="text-xl font-bold">{{ election.votes.count }}</p>
+    </div>
+
+    <div class="bg-white p-4 rounded-xl border">
+        <p class="text-xs text-gray-500">Positions</p>
+        <p class="text-xl font-bold">{{ election.positions.count }}</p>
+    </div>
+
+    <div class="bg-white p-4 rounded-xl border">
+        <p class="text-xs text-gray-500">Candidates</p>
+        <p class="text-xl font-bold">{{ election.candidates.count }}</p>
+    </div>
+
+    <div class="bg-white p-4 rounded-xl border">
+        <p class="text-xs text-gray-500">Parties</p>
+        <p class="text-xl font-bold">{{ election.parties.count }}</p>
+    </div>
+
+</div>
+
+<!-- ================= RESULTS PER POSITION ================= -->
+<div class="space-y-6">
+
+{% for position in election.positions.all %}
+
+<div class="bg-white border rounded-2xl p-5 shadow-sm">
+
+    <!-- POSITION TITLE -->
+    <h2 class="text-lg font-bold text-gray-800 mb-4">
+        🗳 {{ position.name }}
+    </h2>
+
+    <!-- CANDIDATES LIST -->
+    <div class="space-y-3">
+
+        {% for candidate in position.candidates.all %}
+
+        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+
+            <div class="flex items-center gap-3">
+
+                <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
+                    {{ candidate.full_name|slice:":1" }}
+                </div>
+
+                <div>
+                    <p class="font-semibold text-gray-800">
+                        {{ candidate.full_name }}
+                    </p>
+
+                    <p class="text-xs text-gray-500">
+                        {{ candidate.party.name|default:"Independent" }}
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- VOTE COUNT (YOU WILL NEED VIEW LOGIC FOR THIS) -->
+            <div class="text-right">
+                <p class="text-lg font-bold text-indigo-600">
+                    {{ candidate.vote_count|default:0 }}
+                </p>
+                <p class="text-xs text-gray-500">votes</p>
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% endblock %}

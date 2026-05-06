@@ -38,45 +38,62 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
             {% for candidate in candidates %}
-                {% if candidate.position_id == position.id %}
+            {% if candidate.position_id == position.id %}
 
-                <!-- CANDIDATE CARD -->
-                <a href="{% url 'candidate_detail' id=candidate.id %}" class="border rounded-xl p-4 bg-gray-50 hover:shadow-md transition">
+            <!-- CANDIDATE CARD -->
+            <!-- CANDIDATE CARD -->
+            <a href="{% url 'candidate_detail' id=candidate.id %}" class="group relative rounded-2xl bg-white/80 backdrop-blur-lg border border-gray-200/60 
+          p-5 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
 
-                    <!-- HEADER -->
-                    <div class="flex items-center gap-3">
+                <!-- TOP SECTION -->
+                <div class="flex items-center gap-4">
 
-                        <!-- AVATAR -->
-                        {% if candidate.photo %}
-                        <img src="{{ candidate.photo.url }}"
-                            class="w-12 h-12 rounded-full object-cover shadow-lg">
-                        {% else %}
-                        <div class="w-12 h-12 rounded-full shadow-lg
-                                    bg-blue-600 flex items-center justify-center text-white text-2xl font-bold">
-                            {{ candidate.full_name|slice:":1"|upper }}
+                    <!-- AVATAR -->
+                    {% if candidate.photo %}
+                    <img src="{{ candidate.photo.url }}"
+                        class="w-14 h-14 rounded-full object-cover ring-2 ring-white shadow-md">
+                    {% else %}
+                    <div class="w-14 h-14 rounded-full 
+                    bg-gradient-to-br from-blue-500 to-indigo-600 
+                    flex items-center justify-center text-white text-xl font-semibold shadow-md">
+                        {{ candidate.full_name|slice:":1"|upper }}
+                    </div>
+                    {% endif %}
+
+                    <!-- NAME + PARTY -->
+                    <div class="flex-1">
+                        <p class="font-semibold text-gray-900 text-base leading-tight">
+                            {{ candidate.full_name }}
+                        </p>
+
+                        <!-- PARTY BADGE -->
+                        <div class="mt-1 inline-flex items-center gap-2 
+                        bg-gray-100 text-gray-600 text-xs px-2.5 py-1 rounded-full">
+                            <span class="w-2 h-2 bg-blue-500 rounded-full"></span>
+                            {{ candidate.party }}
                         </div>
-                        {% endif %}
-
-                        <!-- NAME -->
-                        <div>
-                            <p class="font-semibold text-gray-800">
-                                {{ candidate.full_name }}
-                            </p>
-                            <p class="text-xs text-gray-500">
-                                {{ candidate.partylist }}
-                            </p>
-                        </div>
-
                     </div>
 
-                    <!-- CAMPAIGN -->
-                    <p class="text-sm text-gray-600 mt-3 leading-relaxed">
-                        {{ candidate.campaign_description }}
-                    </p>
+                    <!-- OPTIONAL ICON -->
+                    <span class="material-icons text-gray-300 group-hover:text-blue-500 transition">
+                        arrow_forward_ios
+                    </span>
+                </div>
 
-                </a>
+                <!-- CAMPAIGN -->
+                <p class="text-sm text-gray-600 mt-4 leading-relaxed line-clamp-3">
+                    {{ candidate.campaign_description }}
+                </p>
 
-                {% endif %}
+                <!-- HOVER GLOW EFFECT -->
+                <div class="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 
+                transition duration-300 pointer-events-none
+                bg-gradient-to-r from-blue-500/5 to-indigo-500/5">
+                </div>
+
+            </a>
+
+            {% endif %}
             {% endfor %}
 
         </div>

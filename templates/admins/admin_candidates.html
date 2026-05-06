@@ -1,0 +1,30 @@
+{% extends "admins/admin_base.html" %}
+
+{% block content %}
+
+<h1 class="text-xl font-bold mb-4">Candidates</h1>
+
+<div class="grid md:grid-cols-2 gap-4">
+
+{% for c in candidates %}
+<div class="bg-white p-4 rounded-xl shadow flex items-center gap-3">
+
+    {% if c.photo %}
+        <img src="{{ c.photo.url }}" class="w-12 h-12 rounded-full">
+    {% else %}
+        <div class="w-12 h-12 bg-blue-600 text-white flex items-center justify-center rounded-full">
+            {{ c.full_name|slice:":1"|upper }}
+        </div>
+    {% endif %}
+
+    <div>
+        <p class="font-semibold">{{ c.full_name }}</p>
+        <p class="text-xs text-gray-500">{{ c.party }}</p>
+    </div>
+
+</div>
+{% endfor %}
+
+</div>
+
+{% endblock %}

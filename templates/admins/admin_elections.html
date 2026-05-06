@@ -1,0 +1,114 @@
+{% extends "admins/admin_base.html" %}
+
+{% block content %}
+
+<div class="flex items-center justify-between mb-6">
+    <h1 class="text-2xl font-bold text-gray-800">🏛 Elections Management</h1>
+</div>
+
+<div class="grid gap-5">
+
+{% for election in elections %}
+
+<div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition">
+
+    <!-- HEADER -->
+    <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+
+        <div class="space-y-1">
+
+            <div class="flex items-center gap-3">
+                <h2 class="text-lg font-bold text-gray-800">
+                    {{ election.title }}
+                </h2>
+
+                <!-- STATUS -->
+                {% if election.is_active %}
+                    <span class="text-xs px-2 py-1 rounded-full bg-green-100 text-green-600">
+                        Active
+                    </span>
+                {% else %}
+                    <span class="text-xs px-2 py-1 rounded-full bg-red-100 text-red-600">
+                        Closed
+                    </span>
+                {% endif %}
+            </div>
+
+            <p class="text-sm text-gray-500">
+                {{ election.description|default:"No description provided." }}
+            </p>
+
+            <p class="text-xs text-gray-400 mt-1">
+                📅 {{ election.start_datetime }} → {{ election.end_datetime }}
+            </p>
+
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="flex flex-wrap gap-2">
+
+            <!-- TOGGLE -->
+            <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="election_id" value="{{ election.id }}">
+
+                <button class="px-3 py-2 rounded-lg text-sm bg-blue-600 text-white hover:bg-blue-700">
+                    Toggle Status
+                </button>
+            </form>
+
+            <!-- VIEW RESULTS -->
+            <a href="{% url 'admin_election_results' election.id %}"
+               class="px-3 py-2 rounded-lg text-sm bg-gray-100 hover:bg-gray-200">
+                Results
+            </a>
+
+            <!-- MANAGE -->
+            <a href=""
+               class="px-3 py-2 rounded-lg text-sm bg-indigo-600 text-white hover:bg-indigo-700">
+                Manage
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- STATS GRID -->
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mt-5 text-center">
+
+        <div class="bg-gray-50 p-3 rounded-xl">
+            <p class="text-xs text-gray-500">Positions</p>
+            <p class="font-bold text-gray-800">{{ election.positions.count }}</p>
+        </div>
+
+        <div class="bg-gray-50 p-3 rounded-xl">
+            <p class="text-xs text-gray-500">Candidates</p>
+            <p class="font-bold text-gray-800">{{ election.candidates.count }}</p>
+        </div>
+
+        <div class="bg-gray-50 p-3 rounded-xl">
+            <p class="text-xs text-gray-500">Votes</p>
+            <p class="font-bold text-gray-800">{{ election.votes.count }}</p>
+        </div>
+
+        <div class="bg-gray-50 p-3 rounded-xl">
+            <p class="text-xs text-gray-500">Parties</p>
+            <p class="font-bold text-gray-800">{{ election.parties.count }}</p>
+        </div>
+
+        <div class="bg-gray-50 p-3 rounded-xl">
+            <p class="text-xs text-gray-500">Voters</p>
+            <p class="font-bold text-gray-800">
+                {{ election.votingsession_set.count }}
+            </p>
+        </div>
+
+    </div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% endblock %}

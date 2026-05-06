@@ -2,92 +2,220 @@
 
 {% block content %}
 
-<div class="space-y-6">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 pb-32 md:pb-0">
 
-    <!-- HEADER -->
-    <div>
-        <h1 class="text-3xl font-bold text-gray-800">
-            🗳 Cast Your Vote
-        </h1>
-        <p class="text-gray-500 text-sm">
-            Select one candidate per position carefully. Your vote is final.
-        </p>
-    </div>
+    <!-- ================= LEFT ================= -->
+    <div class="lg:col-span-2 space-y-6">
 
-    <!-- FORM -->
-    <form method="POST" action="/submit-vote/">
-        {% csrf_token %}
+        <!-- HEADER -->
+        <div>
+            <h1 class="text-3xl font-semibold text-gray-900">🗳 Cast Your Vote</h1>
+            <p class="text-gray-500 text-sm">
+                Select candidates per position carefully.
+            </p>
+        </div>
 
-        {% for position in positions %}
+        <!-- FORM -->
+        <form method="POST" action="/submit-vote/" id="voteForm" class="space-y-6">
+            {% csrf_token %}
 
-        <!-- POSITION CARD -->
-        <div class="bg-white border rounded-xl shadow-sm p-5 mb-6">
+            {% for item in positions_with_candidates %}
 
-            <h2 class="text-xl font-semibold text-gray-700 mb-4">
-                {{ position.name }}
-            </h2>
+            <div class="bg-white border rounded-2xl p-6 space-y-4">
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- POSITION -->
+                <h2 class="text-lg font-semibold text-gray-800">
+                    {{ item.position.name }}
+                </h2>
 
-                {% for candidate in candidates %}
-                    {% if candidate.position_id == position.id %}
+                <p class="text-xs text-gray-500">
+                    Select up to {{ item.position.max_vote }} candidate{{ item.position.max_vote|pluralize }}
+                </p>
 
-                    <!-- CANDIDATE CARD -->
-                    <label class="cursor-pointer border rounded-lg p-4 hover:shadow-md transition bg-gray-50">
+                <div class="grid md:grid-cols-2 gap-4">
 
-                        <div class="flex items-center gap-3">
+                    {% for candidate in item.candidates %}
 
-                            <!-- Radio -->
-                            <input type="radio"
-                                   name="position_{{ position.id }}"
-                                   value="{{ candidate.id }}"
-                                   required
-                                   class="w-4 h-4 text-blue-600">
+                    <!-- CARD -->
+                    <label class="group cursor-pointer rounded-xl border p-4 bg-gray-50 hover:bg-white hover:shadow-md transition">
 
-                            <!-- Candidate Info -->
+                        <div class="flex items-start gap-3">
+
+                            {% if item.position.max_vote == 1 %}
+
+                                <!-- SINGLE VOTE -->
+                                <input type="radio"
+                                       name="position_{{ item.position.id }}"
+                                       value="{{ candidate.id }}"
+                                       data-position="{{ item.position.id }}"
+                                       data-name="{{ candidate.full_name }}"
+                                       required
+                                       class="mt-2 accent-blue-600 vote-input">
+
+                            {% else %}
+
+                                <!-- MULTI VOTE -->
+                                <input type="checkbox"
+                                       name="position_{{ item.position.id }}"
+                                       value="{{ candidate.id }}"
+                                       data-position="{{ item.position.id }}"
+                                       data-name="{{ candidate.full_name }}"
+                                       data-max="{{ item.position.max_vote }}"
+                                       class="mt-2 accent-blue-600 vote-checkbox">
+
+                            {% endif %}
+
+                            <!-- AVATAR -->
+                            {% if candidate.photo %}
+                                <img src="{{ candidate.photo.url }}"
+                                     class="w-12 h-12 rounded-full object-cover">
+                            {% else %}
+                                <div class="w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center">
+                                    {{ candidate.full_name|slice:":1"|upper }}
+                                </div>
+                            {% endif %}
+
+                            <!-- INFO -->
                             <div>
-                                <p class="font-semibold text-gray-800">
+                                <p class="font-medium text-gray-900">
                                     {{ candidate.full_name }}
                                 </p>
 
-                                <p class="text-sm text-gray-500">
-                                    {{ candidate.partylist }}
-                                </p>
+                                <div class="text-xs text-gray-500">
+                                    {{ candidate.party }}
+                                </div>
                             </div>
 
                         </div>
 
-                        <!-- Campaign Preview -->
-                        <p class="text-xs text-gray-500 mt-3 line-clamp-2">
-                            {{ candidate.campaign_description|truncatewords:20 }}
-                        </p>
-
                     </label>
 
-                    {% endif %}
-                {% endfor %}
+                    {% empty %}
+                        <p class="text-sm text-gray-400">No candidates available.</p>
+                    {% endfor %}
+
+                </div>
+            </div>
+
+            {% endfor %}
+
+            <!-- DESKTOP SUBMIT -->
+            <div class="hidden lg:block">
+                <button type="submit"
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl shadow-md">
+                    Submit Final Vote
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+
+    <!-- ================= RIGHT BALLOT ================= -->
+    <div class="lg:col-span-1 hidden md:block">
+
+        <div class="lg:sticky lg:top-6">
+
+            <div class="bg-white rounded-2xl shadow-lg border p-5">
+
+                <h3 class="text-lg font-semibold text-center mb-4">
+                    🧾 Your Ballot
+                </h3>
+
+                <div id="ballotPreview" class="bg-gray-50 border border-dashed rounded-xl p-4 space-y-3">
+
+                    {% for item in positions_with_candidates %}
+                    <div class="flex justify-between text-sm border-b pb-1">
+                        <span class="text-gray-500">{{ item.position.name }}</span>
+                        <span id="preview-{{ item.position.id }}">—</span>
+                    </div>
+                    {% endfor %}
+
+                </div>
 
             </div>
-        </div>
-
-        {% endfor %}
-
-        <!-- SUBMIT BUTTON -->
-        <div class="sticky bottom-0 bg-white p-4 border-t shadow-md">
-
-            <button type="submit"
-                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg">
-                Submit Final Vote
-            </button>
-
-            <p class="text-xs text-gray-500 text-center mt-2">
-                ⚠️ Once submitted, your vote cannot be changed.
-            </p>
 
         </div>
 
-    </form>
+    </div>
 
 </div>
+
+<!-- ================= MOBILE BALLOT ================= -->
+<div class="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t shadow-xl p-4 space-y-3">
+
+    <div class="max-h-32 overflow-auto text-sm space-y-1">
+
+        {% for item in positions_with_candidates %}
+        <div class="flex justify-between">
+            <span class="text-gray-500">{{ item.position.name }}</span>
+            <span id="m-preview-{{ item.position.id }}">—</span>
+        </div>
+        {% endfor %}
+
+    </div>
+
+    <button type="submit" form="voteForm"
+            class="w-full bg-blue-600 text-white py-3 rounded-xl">
+        Submit Final Vote
+    </button>
+
+</div>
+
+<!-- ================= SCRIPT (FIXED FOR SINGLE + MULTI) ================= -->
+<script>
+function updatePreview() {
+
+    const selected = {};
+
+    // HANDLE BOTH RADIO + CHECKBOX
+    document.querySelectorAll(".vote-input:checked, .vote-checkbox:checked").forEach(input => {
+
+        const pos = input.dataset.position;
+        const name = input.dataset.name;
+
+        if (!selected[pos]) selected[pos] = [];
+
+        selected[pos].push(name);
+    });
+
+    // desktop
+    document.querySelectorAll("[id^=preview-]").forEach(el => {
+        const id = el.id.split("-")[1];
+        el.innerText = selected[id]?.join(", ") || "—";
+    });
+
+    // mobile
+    document.querySelectorAll("[id^=m-preview-]").forEach(el => {
+        const id = el.id.split("-")[2];
+        el.innerText = selected[id]?.join(", ") || "—";
+    });
+}
+
+/* LIMIT CHECK FOR MULTI VOTE */
+document.querySelectorAll(".vote-checkbox").forEach(box => {
+    box.addEventListener("change", () => {
+
+        const position = box.dataset.position;
+        const max = parseInt(box.dataset.max);
+
+        const checked = document.querySelectorAll(
+            `.vote-checkbox[data-position="${position}"]:checked`
+        );
+
+        if (checked.length > max) {
+            box.checked = false;
+            return;
+        }
+
+        updatePreview();
+    });
+});
+
+/* RADIO + CHECKBOX UPDATE */
+document.querySelectorAll(".vote-input, .vote-checkbox").forEach(input => {
+    input.addEventListener("change", updatePreview);
+});
+</script>
 
 {% endblock %}
