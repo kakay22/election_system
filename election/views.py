@@ -15,16 +15,19 @@ def landing_page(request):
     election = Election.objects.first()
     now = timezone.now()
 
-    countdown_type = None
+    countdown_type = "closed"
     target_date = None
 
-    if election:
+    if election and election.is_active:
+
         if now < election.start_datetime:
             countdown_type = "starts_in"
             target_date = election.start_datetime
+
         elif election.start_datetime <= now <= election.end_datetime:
             countdown_type = "ends_in"
             target_date = election.end_datetime
+
         else:
             countdown_type = "closed"
 

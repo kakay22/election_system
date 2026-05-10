@@ -8,11 +8,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <style>
         body {
             min-height: 100vh;
             font-family: 'Inter', sans-serif;
+        }
+    </style>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            background: #020617;
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 999px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .card-hover {
+            transition: all .35s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-6px);
+        }
+
+        .animate-fadeIn {
+            animation: fadeIn .3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(.96);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
     </style>
 </head>
@@ -30,67 +92,139 @@
     </div>
 
     <!-- ================= HEADER ================= -->
-    <header class="sticky top-0 z-50 backdrop-blur bg-white border-b border-white/10">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+    <header class="sticky top-0 z-50 px-4 pt-4">
 
-            <h1 class="font-bold text-lg tracking-wide">
-                HIC eVote
-            </h1>
+        <div class="max-w-7xl mx-auto">
 
-            <nav class="hidden md:flex items-center gap-6 text-sm text-gray-800">
-                <a href="#" class="hover:text-white transition">Home</a>
-                <a href="#candidates" class="hover:text-white transition">Candidates</a>
-                <a href="#parties" class="hover:text-white transition">Parties</a>
-                <a href="#about" class="hover:text-white transition">About</a>
-            </nav>
+            <div class="backdrop-blur-xl bg-white/10 border border-white/10 
+        rounded-2xl px-6 py-4 shadow-2xl flex justify-between items-center">
 
-            <div class="flex items-center gap-3">
-                <a href="/accounts/login/"
-                    class="px-4 py-2 text-sm border border-gray-700 rounded-lg hover:bg-white/10 transition">
-                    Login
-                </a>
-                <a href="/accounts/register/"
-                    class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow transition">
-                    Register
-                </a>
+                <!-- LOGO -->
+                <div class="flex items-center gap-3">
+
+                    <div
+                        class="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg">
+
+                        <span class="material-icons text-white text-[22px]">
+                            how_to_vote
+                        </span>
+
+                    </div>
+
+                    <div>
+                        <h1 class="font-bold text-white text-lg tracking-wide">
+                            HIC eVote
+                        </h1>
+
+                        <p class="text-xs text-white/50">
+                            Digital Election Platform
+                        </p>
+                    </div>
+
+                </div>
+
+                <!-- NAV -->
+                <nav class="hidden lg:flex items-center gap-8 text-sm text-white/70">
+
+                    <a href="#" class="hover:text-white transition">
+                        Home
+                    </a>
+
+                    <a href="#candidates" class="hover:text-white transition">
+                        Candidates
+                    </a>
+
+                    <a href="#parties" class="hover:text-white transition">
+                        Parties
+                    </a>
+
+                    <a href="#about" class="hover:text-white transition">
+                        About
+                    </a>
+
+                </nav>
+
+                <!-- BUTTONS -->
+                <div class="flex items-center gap-3">
+
+                    <a href="/accounts/login/" class="px-5 py-2.5 rounded-xl border border-white/10 
+                    bg-white/5 hover:bg-white/10 text-white text-sm transition">
+
+                        Login
+                    </a>
+
+                    <a href="/accounts/register/" class="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 
+                    text-white text-sm shadow-lg shadow-blue-500/30 transition">
+
+                        Register
+                    </a>
+
+                </div>
+
             </div>
 
         </div>
+
     </header>
 
     <!-- ================= HERO ================= -->
-    <section class="text-center py-24 px-4">
+    <section class="relative text-center pt-28 pb-24 px-4 overflow-hidden">
 
-        <div class="max-w-3xl mx-auto">
+        <!-- Glow -->
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 
+    w-[700px] h-[700px] bg-blue-500/20 blur-[140px] rounded-full">
+        </div>
 
-            <div class="inline-flex items-center gap-2 px-4 py-1.5 text-sm 
-            bg-white/10 backdrop-blur rounded-full border border-white/20 text-gray-200 mb-6">
+        <div class="relative z-10 max-w-5xl mx-auto">
+
+            <!-- Badge -->
+            <div class="inline-flex items-center gap-2 px-5 py-2 
+        rounded-full bg-white/10 border border-white/10 
+        backdrop-blur-xl text-white/80 text-sm mb-8">
 
                 <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-                Official Digital Election Platform
+
+                Official Student Election Platform
+
             </div>
 
-            <h1 class="text-5xl md:text-6xl font-extrabold text-white leading-tight mb-6">
-                Secure. Transparent. Trusted.
+            <!-- Title -->
+            <h1 class="text-5xl md:text-7xl font-black text-white leading-[1.05] tracking-tight">
+
+                Secure Digital <br>
+
+                <span class="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
+
+                    Voting System
+
+                </span>
+
             </h1>
 
-            <p class="text-gray-300 text-lg max-w-xl mx-auto mb-10">
-                Conducting fair and transparent elections for
-                <span class="text-white font-semibold">
-                    Holy Infant College of Tacloban City Inc.
-                </span>
+            <!-- Subtitle -->
+            <p class="mt-8 text-lg md:text-xl text-white/60 max-w-3xl mx-auto leading-relaxed">
+
+                Conducting transparent, secure, and modern elections
+                for Holy Infant College of Tacloban City Inc.
+
             </p>
 
-            <div class="flex justify-center gap-4">
-                <a href="/accounts/login/"
-                    class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-semibold shadow-lg transition">
+            <!-- CTA -->
+            <div class="flex flex-col sm:flex-row justify-center gap-4 mt-12">
+
+                <a href="/accounts/login/" class="px-8 py-4 rounded-2xl bg-blue-600 hover:bg-blue-700 
+                text-white font-semibold shadow-2xl shadow-blue-500/30 transition-all duration-300 hover:scale-105">
+
                     Vote Now
                 </a>
 
-                <a href="#candidates"
-                    class="bg-white/10 hover:bg-white/20 text-white px-8 py-3 rounded-xl font-semibold backdrop-blur transition">
+                <a href="#candidates" class="px-8 py-4 rounded-2xl border border-white/10 
+                bg-white/5 hover:bg-white/10 backdrop-blur-xl 
+                text-white font-semibold transition-all duration-300">
+
                     View Candidates
                 </a>
+
             </div>
 
         </div>
@@ -98,76 +232,158 @@
     </section>
 
     <!-- ================= COUNTDOWN (MOBILE-FIRST) ================= -->
+    <!-- ================= ELECTION STATUS CARD ================= -->
     <section class="max-w-4xl mx-auto px-4 mb-20">
 
-        <div class="bg-white/90 backdrop-blur border rounded-3xl p-5 sm:p-8 text-center shadow-xl">
+        <div
+            class="relative overflow-hidden rounded-[32px] border border-white/20 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 shadow-2xl">
 
-            <!-- TITLE -->
-            <h2 class="text-base sm:text-lg font-semibold mb-1 sm:mb-2">
-                Election Countdown
-            </h2>
+            <!-- Decorative Glow -->
+            <div class="absolute -top-24 -right-24 w-72 h-72 bg-blue-500/20 rounded-full blur-3xl">
+            </div>
 
-            <p class="text-xs sm:text-sm text-gray-500 mb-5 sm:mb-6">
-                {% if countdown_type == "starts_in" %}
-                🟡 Election starts in
-                {% elif countdown_type == "ends_in" %}
-                🔴 Election ends in
+            <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl">
+            </div>
+
+            <!-- Content -->
+            <div class="relative z-10 p-6 sm:p-10 text-white">
+
+                <!-- Header -->
+                <div class="mb-8">
+
+                    <div
+                        class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/10 backdrop-blur-sm mb-4">
+
+                        {% if countdown_type == "starts_in" %}
+                        <span class="w-2 h-2 rounded-full bg-yellow-400 animate-pulse"></span>
+                        <span class="text-xs tracking-wide uppercase font-medium text-white/80">
+                            Upcoming Election
+                        </span>
+
+                        {% elif countdown_type == "ends_in" %}
+                        <span class="w-2 h-2 rounded-full bg-red-400 animate-pulse"></span>
+                        <span class="text-xs tracking-wide uppercase font-medium text-white/80">
+                            Election In Progress
+                        </span>
+
+                        {% else %}
+                        <span class="w-2 h-2 rounded-full bg-gray-400"></span>
+                        <span class="text-xs tracking-wide uppercase font-medium text-white/80">
+                            Election Closed
+                        </span>
+                        {% endif %}
+
+                    </div>
+
+                    <h2 class="text-3xl sm:text-4xl font-bold tracking-tight">
+                        Election Countdown
+                    </h2>
+
+                    <p class="text-sm sm:text-base text-white/60 mt-3 max-w-2xl">
+
+                        {% if countdown_type == "starts_in" %}
+                        The election period will officially begin soon. Prepare to cast your vote.
+
+                        {% elif countdown_type == "ends_in" %}
+                        Voting is currently ongoing. Every vote matters.
+
+                        {% else %}
+                        The election period has officially concluded. Thank you for participating.
+                        {% endif %}
+
+                    </p>
+
+                </div>
+
+                {% if countdown_type != "closed" %}
+
+                <!-- Countdown Grid -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+
+                    <!-- DAYS -->
+                    <div
+                        class="bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl p-5 text-center hover:bg-white/15 transition">
+
+                        <p id="days" class="text-4xl sm:text-5xl font-bold tracking-tight text-white">
+                            00
+                        </p>
+
+                        <p class="mt-2 text-xs uppercase tracking-[0.2em] text-white/60">
+                            Days
+                        </p>
+
+                    </div>
+
+                    <!-- HOURS -->
+                    <div
+                        class="bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl p-5 text-center hover:bg-white/15 transition">
+
+                        <p id="hours" class="text-4xl sm:text-5xl font-bold tracking-tight text-white">
+                            00
+                        </p>
+
+                        <p class="mt-2 text-xs uppercase tracking-[0.2em] text-white/60">
+                            Hours
+                        </p>
+
+                    </div>
+
+                    <!-- MINUTES -->
+                    <div
+                        class="bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl p-5 text-center hover:bg-white/15 transition">
+
+                        <p id="minutes" class="text-4xl sm:text-5xl font-bold tracking-tight text-white">
+                            00
+                        </p>
+
+                        <p class="mt-2 text-xs uppercase tracking-[0.2em] text-white/60">
+                            Minutes
+                        </p>
+
+                    </div>
+
+                    <!-- SECONDS -->
+                    <div
+                        class="bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl p-5 text-center hover:bg-white/15 transition">
+
+                        <p id="seconds" class="text-4xl sm:text-5xl font-bold tracking-tight text-white">
+                            00
+                        </p>
+
+                        <p class="mt-2 text-xs uppercase tracking-[0.2em] text-white/60">
+                            Seconds
+                        </p>
+
+                    </div>
+
+                </div>
+
                 {% else %}
-                ⚫ Election closed
+
+                <!-- CLOSED STATE -->
+                <div class="bg-white/10 border border-white/10 rounded-3xl p-10 text-center backdrop-blur-md">
+
+                    <div class="w-20 h-20 mx-auto rounded-full bg-white/10 flex items-center justify-center mb-6">
+
+                        <span class="material-icons text-5xl text-white/80">
+                            how_to_vote
+                        </span>
+
+                    </div>
+
+                    <h3 class="text-3xl font-bold mb-3">
+                        Election Has Ended
+                    </h3>
+
+                    <p class="text-white/60 max-w-lg mx-auto leading-relaxed">
+                        Voting is now officially closed. Thank you to everyone who
+                        participated and contributed to the democratic process.
+                    </p>
+
+                </div>
+
                 {% endif %}
-            </p>
 
-            <!-- COUNTDOWN GRID -->
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-
-                <!-- DAYS -->
-                <div class="bg-white rounded-xl py-4 shadow-sm">
-                    <p id="days" class="text-2xl sm:text-3xl font-bold text-blue-600">00</p>
-                    <p class="text-[10px] sm:text-xs text-gray-500">Days</p>
-                </div>
-
-                <!-- HOURS -->
-                <div class="bg-white rounded-xl py-4 shadow-sm">
-                    <p id="hours" class="text-2xl sm:text-3xl font-bold text-blue-600">00</p>
-                    <p class="text-[10px] sm:text-xs text-gray-500">Hours</p>
-                </div>
-
-                <!-- MINUTES -->
-                <div class="bg-white rounded-xl py-4 shadow-sm">
-                    <p id="minutes" class="text-2xl sm:text-3xl font-bold text-blue-600">00</p>
-                    <p class="text-[10px] sm:text-xs text-gray-500">Minutes</p>
-                </div>
-
-                <!-- SECONDS -->
-                <div class="bg-white rounded-xl py-4 shadow-sm">
-                    <p id="seconds" class="text-2xl sm:text-3xl font-bold text-blue-600">00</p>
-                    <p class="text-[10px] sm:text-xs text-gray-500">Seconds</p>
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-    <!-- ================= STATS ================= -->
-    <section class="max-w-5xl mx-auto px-4 mb-20">
-
-        <div class="grid md:grid-cols-3 gap-6">
-
-            <div class="bg-white/90 backdrop-blur rounded-2xl p-6 shadow text-center">
-                <p class="text-3xl font-bold text-blue-600">{{ total_votes }}</p>
-                <p class="text-sm text-gray-500">Total Votes</p>
-            </div>
-
-            <div class="bg-white/90 backdrop-blur rounded-2xl p-6 shadow text-center">
-                <p class="text-3xl font-bold text-green-600">{{ total_candidates }}</p>
-                <p class="text-sm text-gray-500">Candidates</p>
-            </div>
-
-            <div class="bg-white/90 backdrop-blur rounded-2xl p-6 shadow text-center">
-                <p class="text-3xl font-bold text-purple-600">{{ total_parties }}</p>
-                <p class="text-sm text-gray-500">Party Lists</p>
             </div>
 
         </div>
@@ -198,8 +414,9 @@
             <div class="flex flex-col md:flex-row gap-3">
 
                 <!-- Search -->
-                <input type="text" id="searchInput" placeholder="Search candidate..."
-                    class="w-full md:w-1/2 px-4 py-2 rounded-xl border bg-white/90 focus:outline-none">
+                <input type="text" id="searchInput" placeholder="Search candidate..." class="w-full md:w-1/2 px-5 py-3 rounded-2xl 
+                            glass text-white placeholder:text-white/40 
+                            focus:outline-none focus:ring-2 focus:ring-blue-500">
 
                 <select id="positionFilter" class="px-4 py-2 rounded-xl border bg-white/90 focus:outline-none">
                     <option value="">All Positions</option>
@@ -216,42 +433,78 @@
         <div id="candidatesContent" class="grid md:grid-cols-3 gap-6">
 
             {% for candidate in candidates %}
-            <div class="candidate-card bg-white rounded-2xl p-5 shadow hover:shadow-2xl transition"
+            <div class="candidate-card card-hover glass rounded-3xl p-6 shadow-2xl border border-white/10"
                 data-name="{{ candidate.full_name|lower }}" data-position="{{ candidate.position.name }}">
 
-                <div class="flex items-center gap-4">
+                <!-- TOP -->
+                <div class="flex items-start gap-4">
 
                     {% if candidate.photo %}
-                    <img src="{{ candidate.photo.url }}" class="w-14 h-14 rounded-full object-cover">
+                    <img src="{{ candidate.photo.url }}"
+                        class="w-16 h-16 rounded-2xl object-cover border border-white/10 shadow-lg">
                     {% else %}
                     <div
-                        class="w-14 h-14 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold">
+                        class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center font-bold text-xl shadow-lg">
                         {{ candidate.full_name|slice:":1" }}
                     </div>
                     {% endif %}
 
-                    <div>
-                        <h3 class="font-semibold">{{ candidate.full_name }}</h3>
-                        <p class="text-xs text-gray-500">{{ candidate.position.name }}</p>
+                    <div class="flex-1 min-w-0">
+
+                        <h3 class="font-bold text-white text-lg leading-tight truncate">
+                            {{ candidate.full_name }}
+                        </h3>
+
+                        <p class="text-sm text-white/50 mt-1">
+                            {{ candidate.position.name }}
+                        </p>
+
                     </div>
 
                 </div>
 
-                <!-- Votes -->
-                <div class="mt-3 text-sm text-gray-600">
-                    🗳️ Votes:
-                    <span class="font-semibold text-blue-600 vote-count" data-id="{{ candidate.id }}">
-                        {{ candidate.votes_count|default:0 }}
-                    </span>
+                <!-- VOTES -->
+                <div
+                    class="mt-5 flex items-center justify-between bg-white/5 border border-white/5 rounded-2xl px-4 py-3">
+
+                    <div>
+                        <p class="text-[11px] uppercase tracking-[0.18em] text-white/40">
+                            Total Votes
+                        </p>
+
+                        <p class="text-xl font-bold text-white mt-1">
+                            <span class="vote-count" data-id="{{ candidate.id }}">
+                                {{ candidate.votes_count|default:0 }}
+                            </span>
+                        </p>
+                    </div>
+
+                    <div
+                        class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-400/10 flex items-center justify-center">
+
+                        <span class="material-icons text-blue-300 text-[22px]">
+                            how_to_vote
+                        </span>
+
+                    </div>
+
                 </div>
 
-                <div class="mt-4 flex justify-between items-center">
-                    <span class="text-xs bg-blue-100 text-blue-600 px-3 py-1 rounded-full">
+                <!-- FOOTER -->
+                <div class="mt-5 flex items-center justify-between gap-3">
+
+                    <span
+                        class="inline-flex items-center gap-2 text-xs bg-blue-500/10 text-blue-300 px-3 py-2 rounded-xl border border-blue-400/10 truncate">
+
+                        <span class="w-2 h-2 rounded-full bg-blue-400"></span>
+
                         {{ candidate.party.name }}
+
                     </span>
 
-                    <button class="viewBtn text-xs text-blue-600 hover:underline" data-name="{{ candidate.full_name }}"
-                        data-position="{{ candidate.position.name }}"
+                    <button
+                        class="viewBtn inline-flex items-center gap-1 text-sm font-medium text-white/70 hover:text-white transition"
+                        data-name="{{ candidate.full_name }}" data-position="{{ candidate.position.name }}"
                         data-party="{{ candidate.party.name|default:'Independent' }}"
                         data-votes="{{ candidate.votes_count|default:0 }}"
                         data-photo="{% if candidate.photo %}{{ candidate.photo.url }}{% endif %}"
@@ -262,8 +515,15 @@
                         data-eligibility="{{ candidate.eligibility|default:''|escapejs }}"
                         data-course="{{ candidate.course|default:'N/A' }}"
                         data-year="{{ candidate.year_level|default:'N/A' }}">
-                        View →
+
+                        View Profile
+
+                        <span class="material-icons text-[18px]">
+                            arrow_forward
+                        </span>
+
                     </button>
+
                 </div>
 
             </div>
@@ -355,77 +615,267 @@
 
     <!-- ================= PREMIUM CANDIDATE MODAL ================= -->
     <div id="candidateModal"
-        class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        class="fixed inset-0 bg-slate-950/70 backdrop-blur-md hidden items-center justify-center z-50 p-4 py-8">
 
-        <div class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden animate-fadeIn">
+        <div
+            class="relative w-full max-w-3xl overflow-hidden rounded-[32px] border border-white/10 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 shadow-[0_20px_80px_rgba(0,0,0,0.45)] animate-fadeIn">
 
-            <!-- HEADER -->
-            <div class="p-6 border-b flex items-center gap-4">
-
-                <img id="modalPhoto" class="w-16 h-16 rounded-full object-cover border" src="" alt="Candidate">
-
-                <div>
-                    <h2 id="modalName" class="text-xl font-bold"></h2>
-                    <p id="modalPosition" class="text-sm text-gray-500"></p>
-                </div>
-
-                <div class="ml-auto text-right">
-                    <p class="text-xs text-gray-400">Votes</p>
-                    <p id="modalVotes" class="text-lg font-bold text-blue-600"></p>
-                </div>
-
+            <!-- Decorative Glow -->
+            <div class="absolute -top-24 -right-24 w-72 h-72 bg-blue-500/20 rounded-full blur-3xl">
             </div>
 
-            <!-- BODY -->
-            <div class="p-6 space-y-5 max-h-[65vh] overflow-y-auto">
-
-                <!-- TAGS -->
-                <div class="flex flex-wrap gap-2 text-xs">
-                    <span id="modalParty" class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full"></span>
-
-                    <span id="modalCourse" class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full"></span>
-
-                    <span id="modalYear" class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full"></span>
-                </div>
-
-                <!-- DESCRIPTION -->
-                <div>
-                    <h3 class="text-sm font-semibold text-gray-500 mb-1">About</h3>
-                    <p id="modalDescription" class="text-sm text-gray-700 leading-relaxed"></p>
-                </div>
-
-                <!-- PLATFORM -->
-                <div>
-                    <h3 class="text-sm font-semibold text-gray-500 mb-1">Platform</h3>
-                    <p id="modalPlatform" class="text-sm text-gray-700"></p>
-                </div>
-
-                <!-- QUALIFICATIONS -->
-                <div>
-                    <h3 class="text-sm font-semibold text-gray-500 mb-1">Qualifications</h3>
-                    <p id="modalQualifications" class="text-sm text-gray-700"></p>
-                </div>
-
-                <!-- ACHIEVEMENTS -->
-                <div>
-                    <h3 class="text-sm font-semibold text-gray-500 mb-1">Achievements</h3>
-                    <p id="modalAchievements" class="text-sm text-gray-700"></p>
-                </div>
-
-                <!-- ELIGIBILITY -->
-                <div>
-                    <h3 class="text-sm font-semibold text-gray-500 mb-1">Eligibility</h3>
-                    <p id="modalEligibility" class="text-sm text-gray-700"></p>
-                </div>
-
+            <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl">
             </div>
 
-            <!-- FOOTER -->
-            <div class="p-4 border-t flex justify-end">
-                <button onclick="closeModal()"
-                    class="px-6 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition">
-                    Close
-                </button>
+            <!-- CONTENT -->
+            <div class="relative z-10">
+
+                <!-- HEADER -->
+                <div class="p-6 sm:p-8 border-b border-white/10 flex flex-col sm:flex-row sm:items-center gap-5">
+
+                    <!-- PHOTO -->
+                    <div class="relative">
+
+                        <img id="modalPhoto"
+                            class="w-24 h-24 rounded-3xl object-cover border border-white/10 shadow-2xl" src=""
+                            alt="Candidate">
+
+                        <div
+                            class="absolute -bottom-2 -right-2 w-8 h-8 rounded-xl bg-blue-500 flex items-center justify-center shadow-lg">
+
+                            <span class="material-icons text-white text-[18px]">
+                                verified
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <!-- INFO -->
+                    <div class="flex-1">
+
+                        <div
+                            class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-400/10 text-blue-300 text-xs mb-4">
+
+                            <span class="w-2 h-2 rounded-full bg-blue-400"></span>
+                            Official Candidate
+                        </div>
+
+                        <h2 id="modalName" class="text-3xl font-bold text-white tracking-tight">
+                        </h2>
+
+                        <p id="modalPosition" class="text-white/50 mt-1 text-sm sm:text-base">
+                        </p>
+
+                    </div>
+
+                    <!-- VOTES -->
+                    <div class="bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-center min-w-[120px]">
+
+                        <p class="text-[11px] uppercase tracking-[0.2em] text-white/40">
+                            Total Votes
+                        </p>
+
+                        <p id="modalVotes" class="text-3xl font-black text-white mt-2">
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <!-- BODY -->
+                <div class="p-6 sm:p-8 max-h-[65vh] overflow-y-auto">
+
+                    <!-- TAGS -->
+                    <div class="flex flex-wrap gap-3 mb-8 text-sm">
+
+                        <span id="modalParty"
+                            class="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-blue-500/10 text-blue-300 border border-blue-400/10">
+                        </span>
+
+                        <span id="modalCourse"
+                            class="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-white/5 text-white/70 border border-white/10">
+                        </span>
+
+                        <span id="modalYear"
+                            class="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-white/5 text-white/70 border border-white/10">
+                        </span>
+
+                    </div>
+
+                    <!-- GRID -->
+                    <div class="grid gap-5">
+
+                        <!-- ABOUT -->
+                        <div class="rounded-3xl border border-white/10 bg-white/5 p-5 backdrop-blur-xl">
+
+                            <div class="flex items-center gap-3 mb-4">
+
+                                <div class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center">
+
+                                    <span class="material-icons text-blue-300">
+                                        person
+                                    </span>
+
+                                </div>
+
+                                <div>
+                                    <h3 class="text-white font-semibold">
+                                        About Candidate
+                                    </h3>
+
+                                    <p class="text-xs text-white/40">
+                                        Candidate introduction
+                                    </p>
+                                </div>
+
+                            </div>
+
+                            <p id="modalDescription" class="text-white/70 text-sm leading-relaxed">
+                            </p>
+
+                        </div>
+
+                        <!-- PLATFORM -->
+                        <div class="rounded-3xl border border-white/10 bg-white/5 p-5 backdrop-blur-xl">
+
+                            <div class="flex items-center gap-3 mb-4">
+
+                                <div class="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center">
+
+                                    <span class="material-icons text-purple-300">
+                                        campaign
+                                    </span>
+
+                                </div>
+
+                                <div>
+                                    <h3 class="text-white font-semibold">
+                                        Platform & Advocacy
+                                    </h3>
+
+                                    <p class="text-xs text-white/40">
+                                        Goals and objectives
+                                    </p>
+                                </div>
+
+                            </div>
+
+                            <p id="modalPlatform" class="text-white/70 text-sm leading-relaxed">
+                            </p>
+
+                        </div>
+
+                        <!-- QUALIFICATIONS -->
+                        <div class="rounded-3xl border border-white/10 bg-white/5 p-5 backdrop-blur-xl">
+
+                            <div class="flex items-center gap-3 mb-4">
+
+                                <div class="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center">
+
+                                    <span class="material-icons text-emerald-300">
+                                        workspace_premium
+                                    </span>
+
+                                </div>
+
+                                <div>
+                                    <h3 class="text-white font-semibold">
+                                        Qualifications
+                                    </h3>
+
+                                    <p class="text-xs text-white/40">
+                                        Academic and leadership credentials
+                                    </p>
+                                </div>
+
+                            </div>
+
+                            <p id="modalQualifications" class="text-white/70 text-sm leading-relaxed">
+                            </p>
+
+                        </div>
+
+                        <!-- ACHIEVEMENTS -->
+                        <div class="rounded-3xl border border-white/10 bg-white/5 p-5 backdrop-blur-xl">
+
+                            <div class="flex items-center gap-3 mb-4">
+
+                                <div class="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center">
+
+                                    <span class="material-icons text-amber-300">
+                                        emoji_events
+                                    </span>
+
+                                </div>
+
+                                <div>
+                                    <h3 class="text-white font-semibold">
+                                        Achievements
+                                    </h3>
+
+                                    <p class="text-xs text-white/40">
+                                        Awards and accomplishments
+                                    </p>
+                                </div>
+
+                            </div>
+
+                            <p id="modalAchievements" class="text-white/70 text-sm leading-relaxed">
+                            </p>
+
+                        </div>
+
+                        <!-- ELIGIBILITY -->
+                        <div class="rounded-3xl border border-white/10 bg-white/5 p-5 backdrop-blur-xl">
+
+                            <div class="flex items-center gap-3 mb-4">
+
+                                <div class="w-10 h-10 rounded-xl bg-cyan-500/10 flex items-center justify-center">
+
+                                    <span class="material-icons text-cyan-300">
+                                        fact_check
+                                    </span>
+
+                                </div>
+
+                                <div>
+                                    <h3 class="text-white font-semibold">
+                                        Eligibility
+                                    </h3>
+
+                                    <p class="text-xs text-white/40">
+                                        Candidate verification details
+                                    </p>
+                                </div>
+
+                            </div>
+
+                            <p id="modalEligibility" class="text-white/70 text-sm leading-relaxed">
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- FOOTER -->
+                <div class="p-5 sm:p-6 border-t border-white/10 flex justify-end bg-black/10 backdrop-blur-xl">
+
+                    <button onclick="closeModal()"
+                        class="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-white/10 hover:bg-white/15 text-white border border-white/10 transition-all duration-300">
+
+                        <span class="material-icons text-[18px]">
+                            close
+                        </span>
+
+                        Close
+
+                    </button>
+
+                </div>
+
             </div>
 
         </div>
@@ -571,6 +1021,18 @@
         setInterval(updateVotes, 3000);
         updateVotes();
     </script>
+
+    <footer class="border-t border-white/10 py-8 mt-24">
+
+        <div class="max-w-7xl mx-auto px-4 text-center">
+
+            <p class="text-white/40 text-sm">
+                © 2026 HIC eVote System — Holy Infant College of Tacloban City Inc.
+            </p>
+
+        </div>
+
+    </footer>
 
 </body>
 
